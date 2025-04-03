@@ -1,0 +1,42 @@
+﻿@model KTM_ASP.Models.Interiors
+
+@{
+    ViewData["Title"] = "Chi tiết sản phẩm";
+}
+
+<div class="container">
+    <h2 class="text-center text-primary mt-4">🔍 Chi tiết sản phẩm</h2>
+    <p class="text-center text-muted">Thông tin chi tiết về sản phẩm bạn đã chọn.</p>
+
+    <div class="card shadow-sm border-0 mx-auto mt-3" style="max-width: 600px;">
+        <img src="@(string.IsNullOrEmpty(Model.HinhAnh) ? "/images/default.jpg" : Model.HinhAnh)"
+             class="card-img-top" alt="@Model.TenSanPham" style="height: 300px; object-fit: cover;">
+
+        <div class="card-body">
+            <h4 class="card-title text-success">@Model.TenSanPham</h4>
+            <p class="small text-muted">@Model.MieuTa</p>
+
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><b>📦 Số lượng:</b> @Model.SoLuong</li>
+                <li class="list-group-item"><b>💰 Giá:</b> <span class="text-primary fw-bold">@string.Format("{0:N0} VNĐ", Model.Gia)</span></li>
+                <li class="list-group-item"><b>🛠️ Chất liệu:</b> @Model.ChatLieu</li>
+                <li class="list-group-item">
+                    <b>🎨 Màu sắc:</b>
+                    <div style="display: inline-block; width: 24px; height: 24px; border: 1px solid #ccc; background-color: @Model.MauSac; vertical-align: middle;"></div>
+                </li>
+            </ul>
+
+            <div class="d-flex justify-content-between mt-3">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">✏️ Sửa</a>
+                <a asp-action="Index" class="btn btn-secondary">⬅️ Quay lại</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card:hover {
+        transform: scale(1.03);
+        transition: 0.3s ease-in-out;
+    }
+</style>

@@ -1,0 +1,69 @@
+﻿@model KTM_ASP.Models.Interiors
+
+@{
+    ViewData["Title"] = "Thêm sản phẩm mới";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center text-success">Thêm sản phẩm mới</h2>
+    <p class="text-center text-muted">Nhập thông tin sản phẩm và tải ảnh lên.</p>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg p-4 rounded">
+                <form asp-action="Create" method="post" enctype="multipart/form-data">
+                    <!-- Tên sản phẩm -->
+                    <div class="form-group mb-3">
+                        <label asp-for="TenSanPham" class="form-label fw-bold text-black">Tên sản phẩm</label>
+                        <input asp-for="TenSanPham" class="form-control" placeholder="Nhập tên sản phẩm" required maxlength="100" />
+                    </div>
+
+                    <!-- Mô tả -->
+                    <div class="form-group mb-3">
+                        <label asp-for="MieuTa" class="form-label fw-bold text-black">Mô tả</label>
+                        <textarea asp-for="MieuTa" class="form-control" rows="3" placeholder="Nhập mô tả sản phẩm" required maxlength="500"></textarea>
+                    </div>
+
+                    <!-- Số lượng -->
+                    <div class="form-group mb-3">
+                        <label asp-for="SoLuong" class="form-label fw-bold text-black">Số lượng</label>
+                        <input asp-for="SoLuong" class="form-control" type="number" min="1" required placeholder="Nhập số lượng" />
+                    </div>
+
+                    <!-- Chất liệu -->
+                    <div class="form-group mb-3">
+                        <label asp-for="ChatLieu" class="form-label fw-bold text-black text-black">Chất liệu</label>
+                        <select asp-for="ChatLieu" class="form-select" required>
+                            <option value="Da">Da</option>
+                            <option value="Vải">Vải</option>
+                            <option value="Gỗ">Gỗ</option>
+                        </select>
+                    </div>
+
+                    <!-- Màu sắc -->
+                    <div class="form-group mb-3">
+                        <label asp-for="MauSac" class="form-label fw-bold d-block text-black">Màu sắc</label>
+                        <input asp-for="MauSac" type="color" class="form-control form-control-color w-100" required />
+                    </div>
+
+                    <!-- Giá -->
+                    <div class="form-group mb-3">
+                        <label asp-for="Gia" class="form-label fw-boldv text-black">Giá (VNĐ)</label>
+                        <input asp-for="Gia" class="form-control" type="number" min="1000" step="1000" required placeholder="Nhập giá sản phẩm" oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+                    </div>
+
+                    <!-- Hình ảnh -->
+                    <div class="form-group mb-3">
+                        <label asp-for="AnhFile" class="form-label fw-bold text-black">Chọn hình ảnh</label>
+                        <input asp-for="AnhFile" type="file" class="form-control" accept="image/*" />
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="Index" class="btn btn-outline-secondary">Quay lại</a>
+                        <button type="submit" class="btn btn-success">Lưu sản phẩm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

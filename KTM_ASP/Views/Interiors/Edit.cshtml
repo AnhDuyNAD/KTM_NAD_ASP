@@ -1,0 +1,116 @@
+﻿@model KTM_ASP.Models.Interiors
+
+@{
+    ViewData["Title"] = "Chỉnh sửa sản phẩm";
+}
+
+<div class="container">
+    <h2 class="text-center text-primary mt-4">✏️ Chỉnh sửa sản phẩm</h2>
+    <p class="text-center text-muted">Cập nhật thông tin chi tiết về sản phẩm.</p>
+
+    <div class="card shadow-sm border-0 mx-auto mt-3 p-4" style="max-width: 450px;">
+        <div class="text-center">
+            <img id="previewImage"
+                 src="@Url.Content(string.IsNullOrEmpty(Model.HinhAnh) ? "/images/default.jpg" : Model.HinhAnh)"
+                 class="rounded mb-3"
+                 style="max-width: 150px; height: auto;" />
+        </div>
+
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+            <input type="hidden" asp-for="Id" />
+
+            <div class="mb-3">
+                <label asp-for="TenSanPham" class="form-label text-black">📌 Tên sản phẩm</label>
+                <input asp-for="TenSanPham" class="form-control" placeholder="Nhập tên sản phẩm..." />
+                <span asp-validation-for="TenSanPham" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="MieuTa" class="form-label text-black">📖 Mô tả</label>
+                <textarea asp-for="MieuTa" class="form-control" rows="3" placeholder="Nhập mô tả sản phẩm..."></textarea>
+                <span asp-validation-for="MieuTa" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="SoLuong" class="form-label text-black">📦 Số lượng</label>
+                <input asp-for="SoLuong" type="number" class="form-control" min="0" />
+                <span asp-validation-for="SoLuong" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Gia" class="form-label text-black">💰 Giá (VNĐ)</label>
+                <input asp-for="Gia" type="number" class="form-control" min="0" />
+                <span asp-validation-for="Gia" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ChatLieu" class="form-label text-black">🛠️ Chất liệu</label>
+                <input asp-for="ChatLieu" class="form-control" placeholder="Nhập chất liệu..." />
+                <span asp-validation-for="ChatLieu" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="MauSac" class="form-label fw-bold d-block text-black">🎨 Màu sắc</label>
+                <input id="colorPicker" asp-for="MauSac" type="color" class="form-control form-control-color w-100"
+                       value="@(string.IsNullOrEmpty(Model.MauSac) ? "#ffffff" : Model.MauSac)" required />
+                <input id="colorInput" asp-for="MauSac" class="form-control mt-2" placeholder="Nhập màu sắc..." />
+                <span asp-validation-for="MauSac" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label text-black">🖼️ Hình ảnh (Tải lên)</label>
+
+                <!-- Input file để chọn ảnh -->
+                <input type="file" id="imageUpload" name="AnhFile" class="form-control" accept="image/*" onchange="previewUploadedImage(event)" />
+
+                <span asp-validation-for="AnhFile" class="text-danger"></span>
+            </div>
+
+
+            <div class="d-flex justify-content-between mt-3">
+                <button type="submit" class="btn btn-success">💾 Lưu thay đổi</button>
+                <a asp-action="Index" class="btn btn-secondary">⬅️ Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+<script>
+        document.addEventListener("DOMContentLoaded", function () {
+        const colorPicker = document.getElementById("colorPicker");
+        const colorInput = document.getElementById("colorInput");
+
+        // Gán giá trị màu hiện tại vào ô nhập
+        colorInput.value = colorPicker.value;
+
+        // Khi chọn màu, cập nhật giá trị vào ô nhập
+        colorPicker.addEventListener("input", function () {
+            colorInput.value = colorPicker.value;
+        });
+
+        // Khi nhập mã màu, cập nhật ô chọn màu
+        colorInput.addEventListener("input", function () {
+            if(/^#([0-9A-F]{3}){1,2}$/i.test(colorInput.value)) {
+                colorPicker.value = colorInput.value;
+            }
+        });
+    });
+
+       function previewUploadedImage(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById("previewImage").src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+

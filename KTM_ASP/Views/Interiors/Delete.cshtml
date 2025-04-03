@@ -1,0 +1,49 @@
+﻿@model KTM_ASP.Models.Interiors
+
+@{
+    ViewData["Title"] = "Xóa sản phẩm";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center text-danger">⚠️ Xóa sản phẩm</h2>
+    <p class="text-center text-muted">Bạn có chắc chắn muốn xóa sản phẩm này không?</p>
+
+    <div class="card shadow-sm border-0 p-3">
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <img src="@(string.IsNullOrEmpty(Model.HinhAnh) ? "/images/default.jpg" : Model.HinhAnh)"
+                     class="img-thumbnail" alt="@Model.TenSanPham" style="max-height: 200px; object-fit: cover;">
+            </div>
+            <div class="col-md-8">
+                <dl class="row">
+                    <dt class="col-sm-4">Tên sản phẩm</dt>
+                    <dd class="col-sm-8 fw-bold text-success">@Model.TenSanPham</dd>
+
+                    <dt class="col-sm-4">Mô tả</dt>
+                    <dd class="col-sm-8">@Model.MieuTa</dd>
+
+                    <dt class="col-sm-4">Số lượng</dt>
+                    <dd class="col-sm-8">@Model.SoLuong</dd>
+
+                    <dt class="col-sm-4">Giá</dt>
+                    <dd class="col-sm-8 text-primary fw-bold">@string.Format("{0:N0} VNĐ", Model.Gia)</dd>
+
+                    <dt class="col-sm-4">Chất liệu</dt>
+                    <dd class="col-sm-8">@Model.ChatLieu</dd>
+
+                    <dt class="col-sm-4">Màu sắc</dt>
+                    <dd class="col-sm-8">@Model.MauSac</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <form asp-action="Delete" class="d-inline">
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="btn btn-danger">🗑️ Xóa</button>
+        </form>
+        <a asp-action="Index" class="btn btn-secondary">🔙 Quay lại</a>
+    </div>
+</div>
+

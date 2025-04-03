@@ -1,0 +1,314 @@
+﻿html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+    color: white;
+    background-color: white;
+}
+
+.favorite-btn {
+    position: absolute;
+    top: 10px; /* Cách đỉnh ảnh 10px */
+    right: 10px; /* Cách phải 10px */
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 10; /* Giúp tim không bị chồng bởi ảnh */
+}
+
+.heart-icon {
+    font-size: 24px;
+    color: red;
+}
+
+.floating-img {
+    animation: floatUpDown 3s ease-in-out infinite;
+}
+
+@keyframes floatUpDown {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+header {
+    background-color: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.nav {
+    margin-bottom: 0; /* Loại bỏ khoảng cách dưới navbar */
+    padding-bottom: 0;
+    flex-grow: 1; /* Giúp menu giãn ra đều */
+    justify-content: center;
+}
+
+.nav-item {
+    margin: 0 10px;
+}
+
+.nav-link {
+    color: black !important; /* Màu chữ mặc định */
+    font-weight: bold; /* Chữ đậm */
+    font-size: 16px;
+    padding: 10px 15px;
+    transition: color 0.3s ease-in-out, border-bottom 0.3s ease-in-out;
+    position: relative;
+}
+
+    .nav-link:hover {
+        color: #f8d210 !important; /* Màu vàng nhẹ khi hover */
+    }
+
+    .nav-link::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 5px;
+        width: 100%;
+        height: 2px;
+        background-color: #f8d210; /* Màu gạch chân khi hover */
+        transform: scaleX(0);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .nav-link:hover::after {
+        transform: scaleX(1);
+    }
+
+.home-section {
+    background-color: #234034; /* Màu nền section */
+    color: white; /* Màu chữ */
+    padding: 80px 0; /* Khoảng cách trên dưới */
+    margin-top: 10px; /* Đẩy section xuống để không đè lên header */
+}
+
+.navbar {
+    z-index: 1000; /* Giữ navbar luôn trên cùng */
+}
+
+
+.floating-img {
+    max-width: 100%;
+    height: auto;
+    transform: translateY(10px); /* Hiệu ứng nổi nhẹ */
+}
+
+.row.text-center {
+    margin-top: 5px; /* Giảm khoảng cách trên của hàng */
+}
+
+.stat-number {
+    margin-bottom: 8px; /* Giảm khoảng cách dưới số */
+    font-size: 22px; /* Làm số to hơn */
+}
+
+.stat-text {
+    margin-top: -5px; /* Đưa chữ lên gần hơn */
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+h1 {
+    margin-bottom: 20px; /* Khoảng cách dưới tiêu đề */
+}
+
+p {
+    margin-bottom: 25px; /* Khoảng cách dưới đoạn văn */
+}
+
+button {
+    margin-bottom: 30px; /* Khoảng cách dưới nút */
+}
+
+.row.mt-2 {
+    row-gap: 30px; /* Khoảng cách giữa các dòng trong hàng */
+}
+
+
+.card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.card-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-img-top {
+    height: 300px; /* Cố định chiều cao ảnh */
+    object-fit: cover;
+}
+
+.row-category {
+    margin-bottom: 5px !important;
+}
+
+.row {
+    margin-top: 5px !important;
+}
+
+.product-name {
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.price-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.old-price {
+    font-size: 0.9rem; /* Giảm kích thước chữ của giá cũ */
+}
+
+/* Phần about */
+.about {
+    padding: 150px 8% 120px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.about-img img {
+    max-width: 530px;
+    height: auto;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.about-text h3 {
+    color: #388b6f;
+    font-size: 30px;
+    line-height: 1;
+}
+
+.about-text p {
+    color: black;
+    letter-spacing: 1px;
+    margin-bottom: 4rem;
+    margin-top: 10px;
+}
+
+#about-btn {
+    width: 150px;
+    height: 35px;
+    background: white;
+    border: 2px solid #388b6f;
+    color: #388b6f;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+    #about-btn:hover {
+        background: #388b6f;
+        color: white;
+    }
+/*Phần xem thêm*/
+
+.view-more-container {
+    text-align: center;
+    margin: 30px 0; /* Cách đều cả trên và dưới */
+}
+
+.view-more {
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+    text-decoration: none;
+}
+
+/*Phần benner*/
+.banner-container {
+    text-align: center;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.view-more {
+    display: inline-block;
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+    text-decoration: none;
+}
+
+.banner {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    height: 350px;
+    background: url("https://theme.hstatic.net/200000860493/1001285943/14/img_collection_info_3.jpg?v=159") center/cover no-repeat;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Nền tối phủ full ảnh */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+    .overlay h2 {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #f5c16c;
+        margin-bottom: 10px;
+    }
+
+    .overlay p {
+        font-size: 1rem;
+        max-width: 80%;
+    }
+
+/*Phần benner 2*/

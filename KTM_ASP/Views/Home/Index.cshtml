@@ -1,0 +1,220 @@
+﻿@model List<Product>
+@{
+    ViewData["Home"] = "Index";
+}
+<div class="home-section d-flex align-items-center">
+
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- Nội dung bên trái -->
+            <div class="col-md-6">
+                <h1><span class="text-warning">Nội Thất</span> nâng tầm không gian sống</h1>
+                <p>
+                    Khám phá nội thất thiết kế đương đại mang đến cảm giác thoải mái, sang trọng. Cá nhân hóa trong từng sản phẩm phù hợp với mọi không gian sống.
+                </p>
+                <button class="btn btn-warning rounded-pill px-4 py-2">
+                    <i class="fas fa-shopping-cart"></i> Khám phá ngay
+                </button>
+
+                <div class="row mt-2 text-center justify-content-center">
+                    <div class="col-4 col-md-3">
+                        <h4 class="text-warning stat-number">15.000+</h4>
+                        <p class="stat-text">Sản phẩm đa dạng</p>
+                    </div>
+                    <div class="col-4 col-md-3">
+                        <h4 class="text-warning stat-number">10+</h4>
+                        <p class="stat-text">Hệ thống cửa hàng</p>
+                    </div>
+                    <div class="col-4 col-md-3">
+                        <h4 class="text-warning stat-number">20+</h4>
+                        <p class="stat-text">Giải thưởng</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hình ảnh sản phẩm -->
+            <div class="col-md-6 text-center">
+                <img src="https://bizweb.dktcdn.net/100/501/740/themes/929449/assets/slider_text_image.png?1736415638335"
+                     class="img-fluid floating-img" alt="Nội thất đẹp">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Phần about-->
+<section class="about" id="about">
+    <div class="about-img">
+        <img src="https://anhduynad.github.io/KTM_NAD16/img/about-img.png" alt="About" />
+    </div>
+    <div class="about-text">
+        <h3>Sự tươi mới qua từng góc nhìn</h3>
+        <p>
+            Khách hàng rất quan trọng đối với chúng tôi, sự hài lòng mỗi ngày của
+            khách hàng là niềm hãnh diện của chúng tôi. Bước đầu tiên để vượt lên
+            kỳ vọng của khách hàng là biết những kỳ vọng đó. Để cuộc sống tươi đẹp
+            hơn, được dậy sớm mỗi ngày, làm việc tốt mỗi ngày và cười nhiều hơn
+            mỗi ngày hãy đừng ngần ngại chọn chúng tôi. Chúng tôi sẽ cho bạn sự
+            tươi mới mỗi ngày......
+        </p>
+        <button id="about-btn" class="btn btn-primary">Xem thêm...</button>
+    </div>
+</section>
+
+
+<!--Phần Bộ sưa tập -->
+<div class="container mt-4">
+    <h2 class="text-center fw-bold text-dark">Bộ sưu tập</h2>
+
+    <!-- Bộ lọc danh mục -->
+    <div class="d-flex justify-content-center gap-3 mb-2">
+        <!-- Giảm khoảng cách dưới danh mục -->
+        <button class="btn btn-warning category-btn" data-category="Hiện đại">Hiện đại</button>
+        <button class="btn btn-light category-btn" data-category="Cổ điển">Cổ điển</button>
+        <button class="btn btn-light category-btn" data-category="Đơn giản">Đơn giản</button>
+        <button class="btn btn-light category-btn" data-category="Sang trọng">Sang trọng</button>
+    </div>
+</div>
+<!-- Danh sách sản phẩm -->
+<div class="container">
+    <div class="row mt-1">
+        @foreach (var product in Model)
+        {
+            var isHidden = product.Category == "Hiện đại" ? "" : "d-none";
+            <div class="col-md-3 mb-4 product @isHidden" data-category="@product.Category">
+                <div class="card h-100">
+                    <img src="@product.ImageUrl" class="card-img-top" alt="@product.Name">
+                    <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">@product.Discount</span>
+                    <div class="card-body d-flex flex-column justify-content-between text-center">
+
+                        <!-- Giới hạn tên sản phẩm -->
+                        <h5 class="card-title text-truncate product-name">@product.Name</h5>
+
+                        <!-- Đảm bảo giá mới và giá cũ luôn thẳng hàng -->
+                        <div class="price-container d-flex flex-column align-items-center">
+                            <p class="card-text text-danger fw-bold m-0">
+                                Giá: @product.Price.ToString("N0") đ
+                            </p>
+                            @if (product.OldPrice > 0)
+                            {
+                                <p class="text-muted m-0 old-price"><del>@string.Format("{0:N0}", product.OldPrice) đ</del></p>
+                            }
+                        </div>
+
+                        <a href="#" class="btn btn-success mt-2">Chi tiết</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const categoryButtons = document.querySelectorAll(".category-btn");
+        const products = document.querySelectorAll(".product");
+        const statNumbers = document.querySelectorAll(".stat-number");
+
+        // ✅ Hiệu ứng lọc danh mục
+        categoryButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                // Xóa lớp "btn-warning" khỏi tất cả nút và thêm lại "btn-light"
+                categoryButtons.forEach(btn => {
+                    btn.classList.remove("btn-warning");
+                    btn.classList.add("btn-light");
+                });
+
+                // Đổi màu vàng cho nút đang được chọn
+                button.classList.remove("btn-light");
+                button.classList.add("btn-warning");
+
+                const selectedCategory = button.getAttribute("data-category");
+
+                // Ẩn tất cả sản phẩm
+                products.forEach(product => {
+                    product.classList.add("d-none");
+                });
+
+                // Hiển thị tối đa 4 sản phẩm thuộc danh mục được chọn
+                let count = 0;
+                products.forEach(product => {
+                    if (product.getAttribute("data-category") === selectedCategory && count < 4) {
+                        product.classList.remove("d-none");
+                        count++;
+                    }
+                });
+            });
+        });
+
+        // ✅ Hiệu ứng chạy số đồng thời
+        function animateCountUp(elements) {
+            let duration = 5000; // Tổng thời gian chạy (ms) ~ 3 giây
+            let frameRate = 60; // 60 FPS
+            let totalFrames = (duration / 1000) * frameRate; // Tổng số khung hình
+            let currentFrame = 0;
+
+            let startValues = Array.from(elements).map(el => 0);
+            let targetValues = Array.from(elements).map(el => {
+                return parseInt(el.getAttribute("data-target").replace(/\D/g, ""));
+            });
+
+            function updateNumbers() {
+                currentFrame++;
+                elements.forEach((el, index) => {
+                    let progress = currentFrame / totalFrames;
+                    let easedProgress = progress * (2 - progress); // Làm mượt chuyển động
+                    let currentValue = Math.round(easedProgress * targetValues[index]);
+
+                    if (currentValue >= targetValues[index]) {
+                        currentValue = targetValues[index];
+                    }
+
+                    el.innerText = currentValue.toLocaleString() + "+"; // Format số có dấu phân cách
+                });
+
+                if (currentFrame < totalFrames) {
+                    requestAnimationFrame(updateNumbers);
+                }
+            }
+
+            requestAnimationFrame(updateNumbers);
+        }
+
+        function startCounting(entries, observer) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    observer.unobserve(entry.target); // Chạy 1 lần khi xuất hiện
+                    animateCountUp(statNumbers);
+                }
+            });
+        }
+
+        // ✅ Quan sát khi số xuất hiện trên màn hình
+        const observer = new IntersectionObserver(startCounting, { threshold: 0.5 });
+        statNumbers.forEach(el => {
+            let rawNumber = el.innerText.replace(/\D/g, ""); // Loại bỏ ký tự không phải số
+            if (!isNaN(rawNumber) && rawNumber !== "") {
+                el.setAttribute("data-target", rawNumber); // Lưu giá trị số vào data-target
+                observer.observe(el);
+            }
+        });
+    });
+</script>
+
+<div class="view-more-container">
+    <a href="#" class="view-more">Xem thêm →</a>
+</div>
+
+<!--Phần baneer-->
+<div class="banner-container">
+    <section class="banner">
+        <div class="overlay">
+            <h2>NGUỒN CẢM HỨNG VÔ TẬN</h2>
+            <p>
+                Khám phá nội thất thiết kế đương đại mang đến cảm giác thoải mái, sang trọng.
+                Cá nhân hoá trong từng sản phẩm phù hợp với mọi không gian sống.
+            </p>
+        </div>
+    </section>
+</div>
+
+<!--Phần Banner 2-->

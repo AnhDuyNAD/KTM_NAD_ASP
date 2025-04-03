@@ -1,0 +1,174 @@
+﻿@model IEnumerable<KTM_ASP.Models.Interiors>
+
+@{
+    ViewData["Title"] = "Danh sách sản phẩm";
+    var role = Context.Session.GetString("Role"); // Lấy vai trò từ Session
+}
+
+<div class="container">
+    <h2 class="text-center text-success mt-4">Danh sách sản phẩm</h2>
+    <p class="text-center text-muted">Dưới đây là danh sách sản phẩm.</p>
+
+    <div class="d-flex justify-content-between mb-3">
+        <input id="searchBox" type="text" class="form-control w-25" placeholder="🔎 Tìm kiếm sản phẩm..." onkeyup="filterProducts()">
+        <select id="sortPrice" class="form-select w-25" onchange="sortProducts()">
+            <option value="">📌 Sắp xếp theo giá</option>
+            <option value="low-to-high">⬆️ Giá: Thấp → Cao</option>
+            <option value="high-to-low">⬇️ Giá: Cao → Thấp</option>
+        </select>
+        <select id="filterMaterial" class="form-select w-25" onchange="filterProducts()">
+            <option value="">📌 Chọn chất liệu</option>
+            <option value="Da">🟤 Da</option>
+            <option value="Vải">🧵 Vải</option>
+            <option value="Gỗ">🪵 Gỗ</option>
+        </select>
+    </div>
+
+    <div class="row" id="productList">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-3 product-card position-relative" data-name="@item.TenSanPham" data-price="@item.Gia" data-material="@item.ChatLieu">
+                <div class="card shadow-sm border-0 position-relative">
+                    
+                    <!-- Nút yêu thích -->
+                    <button class="favorite-btn position-absolute"
+                            data-id="@item.Id"
+                            style="top: 10px; right: 10px; background: none; border: none; z-index: 10;"
+                            onclick="toggleFavorite(@item.Id)">
+                        <span class="heart-icon">🤍</span>
+                    </button>
+
+                    <img src="@(string.IsNullOrEmpty(item.HinhAnh) ? "/images/default.jpg" : item.HinhAnh)"
+                         class="card-img-top" alt="@item.TenSanPham" style="height: 200px; object-fit: cover;">
+
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-success text-black">@item.TenSanPham</h5>
+                        <p class="small text-muted text-black">@item.MieuTa</p>
+                        <h6 class="text-primary fw-bold text-black">Giá: @string.Format("{0:N0} VNĐ", item.Gia)</h6>
+                        <p class="text-secondary text-black">🛠️ Chất liệu: <b>@item.ChatLieu</b></p>
+
+                        <!-- Kiểm tra vai trò người dùng -->
+                        <div class="d-flex justify-content-between">
+                            @if (role == "admin")
+                            {
+                                <!-- Nếu là Admin -->
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">✏️ Sửa</a>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">🔍 Chi tiết</a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger" onclick="return confirm('⚠️ Bạn có chắc chắn muốn xóa?');">🗑️ Xóa</a>
+                            }
+                            else if (role == "customer")
+                            {
+                                <!-- Nếu là Khách hàng -->
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">🔍 Xem chi tiết</a>
+                                        <a href="#" class="btn btn-sm btn-success" onclick="addToCart()">🛒 Thêm vào giỏ</a>
+
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Nếu là Admin, hiển thị nút thêm sản phẩm -->
+    @if (role == "admin")
+    {
+        <div class="text-center mt-4">
+            <a asp-action="Create" class="btn btn-success">➕ Thêm sản phẩm mới</a>
+        </div>
+    }
+</div>
+
+<!-- Nếu chưa đăng nhập, yêu cầu đăng nhập -->
+@if (string.IsNullOrEmpty(role))
+{
+    <script>
+        alert("Vui lòng đăng nhập hoặc đăng ký để tiếp tục!");
+        window.location.href = "/Home/Index"; // Chuyển hướng đến trang đăng nhập
+    </script>
+}
+<script>
+    function filterProducts() {
+        let search = document.getElementById("searchBox").value.toLowerCase();
+        let material = document.getElementById("filterMaterial").value;
+        let products = document.getElementsByClassName("product-card");
+
+        for (let i = 0; i < products.length; i++) {
+            let name = products[i].getAttribute("data-name").toLowerCase();
+            let mat = products[i].getAttribute("data-material");
+
+            if ((name.includes(search) || search === "") && (mat === material || material === "")) {
+                products[i].style.display = "block";
+            } else {
+                products[i].style.display = "none";
+            }
+        }
+    }
+
+    function sortProducts() {
+        let container = document.getElementById("productList");
+        let products = Array.from(document.getElementsByClassName("product-card"));
+        let sortType = document.getElementById("sortPrice").value;
+
+        products.sort((a, b) => {
+            let priceA = parseFloat(a.getAttribute("data-price"));
+            let priceB = parseFloat(b.getAttribute("data-price"));
+
+            return sortType === "low-to-high" ? priceA - priceB : priceB - priceA;
+        });
+
+        products.forEach(p => container.appendChild(p));
+    }
+</script>
+
+<script>
+    function toggleFavorite(productId) {
+        let button = document.querySelector(`button.favorite-btn[data-id='${productId}']`);
+        let icon = button.querySelector(".heart-icon");
+        let productCard = button.closest(".product-card");
+
+        // Kiểm tra trạng thái hiện tại
+        if (icon.textContent === "🤍") {
+            icon.textContent = "❤️"; // Thả tim
+            productCard.setAttribute("data-favorite", "true");
+        } else {
+            icon.textContent = "🤍"; // Bỏ tim
+            productCard.setAttribute("data-favorite", "false");
+        }
+
+        sortFavoriteProducts();
+    }
+
+    function sortFavoriteProducts() {
+        let container = document.getElementById("productList");
+        let products = Array.from(document.getElementsByClassName("product-card"));
+
+        // Ưu tiên sản phẩm đã thả tim (❤️) lên đầu
+        products.sort((a, b) => {
+            let favA = a.getAttribute("data-favorite") === "true" ? 1 : 0;
+            let favB = b.getAttribute("data-favorite") === "true" ? 1 : 0;
+            return favB - favA;
+        });
+
+        products.forEach(p => container.appendChild(p));
+    }
+      function addToCart() {
+        // Thêm vào giỏ logic (chỉ hiển thị thông báo ở đây)
+        alert("Sản phẩm đã được thêm vào giỏ!");
+
+        // Thay đổi nội dung nút nếu muốn
+        var button = event.target;
+        button.textContent = "Đã thêm vào giỏ";
+        button.classList.remove('btn-success');
+        button.classList.add('btn-secondary');
+    }
+</script>
+
+
+
+<style>
+    .card:hover {
+        transform: scale(1.05);
+        transition: 0.3s ease-in-out;
+    }
+</style>
